@@ -14,10 +14,10 @@ const catalog_ads_attributes = async (html) => {
         let catalog_box = $('.app-organic-search__list')
         let catalog_box_item = catalog_box.find('.list-no-v2-outter')
     
-        // Return catalog details if found
-        if (catalog_box_item.length > 0) {
+        // Check if found catalog ads
+        if ( catalog_box_item.length > 0 ) {
             
-            /* Return all details on page */
+            // Return all details on page
             await catalog_box_item.each((i, el) => { 
                 catalog_ads.push({
 
@@ -26,13 +26,14 @@ const catalog_ads_attributes = async (html) => {
                         a = $(el).find('.J-img-switcher-item').attr('data-search-gt-img') 
                         b = $(el).find('.elements-title-normal.one-line').attr('data-p4plog')
                         
-                        if ( a != undefined ) {
+                        if ( a != undefined && a != '') {
                             return a
                         
-                        } 
-                        
-                        if ( b != undefined ) {
+                        } else if ( b != undefined && b != '' ) {
                             return b
+                        
+                        } else {
+                            return undefined
                         }
                     })(),
                       
@@ -41,13 +42,14 @@ const catalog_ads_attributes = async (html) => {
                         a = $(el).find('.elements-title-normal.one-line').attr('title') 
                         b = $(el).find('.elements-title-normal__outter').text()
 
-                        if ( a != undefined ) {
+                        if ( a != undefined && a != '') {
                             return a
                         
-                        } 
-                        
-                        if ( b != undefined ) {
+                        } else if ( b != undefined && b != '' ) {
                             return b
+                        
+                        } else {
+                            return undefined
                         }
                     })(),
                     
@@ -56,14 +58,15 @@ const catalog_ads_attributes = async (html) => {
                         a = $(el).find('.elements-offer-price-normal.medium').attr('title') 
                         b = $(el).find('.elements-offer-price-normal__price').text()
 
-                        if ( a != undefined ) {
+                        if ( a != undefined && a != '') {
                             return a
                         
-                        } 
-                        
-                        if ( b != undefined ) {
+                        } else if ( b != undefined && b != '' ) {
                             return b
-                        }
+                        
+                        } else {
+                            return undefined
+                        } 
                     })(),
                     
                     // Price discount
@@ -96,14 +99,20 @@ const catalog_ads_attributes = async (html) => {
 
 }
 
+// Search keyword URL
+let url = `https://www.alibaba.com/trade/search?SearchText=${argv[0]}`
 
 const request_catalog_ads_attributes = async (index) => {
-    // Request page
-    let html = await axios.get(`https://www.alibaba.com/trade/search?SearchText=${argv[0]}&page=${index}`)
-        .then(response => {
-            return response.data
-        })
+    // Set URL index
+    url += `&page=${index}`
     
+    // Request page
+    let html = await axios.get(url)  
+    .then(response => {
+        return response.data
+    })
+
+    // Scrape
     return await catalog_ads_attributes(html)
     .then(attributes => { 
         return attributes
@@ -112,7 +121,7 @@ const request_catalog_ads_attributes = async (index) => {
 }
 
 
-const request_range_catalog_ads_attributes = async (range) => {
+const request_range_catalog_ads_attributes = (range) => {
     promises = []
     
     // Scrape the total of pages set by the range
@@ -120,7 +129,7 @@ const request_range_catalog_ads_attributes = async (range) => {
         promises.push(request_catalog_ads_attributes(index))
     }
     
-    return await Promise.all(promises)
+    return Promise.all(promises)
 
 }
 
