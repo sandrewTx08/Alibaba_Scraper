@@ -8,7 +8,9 @@ const catalog_ads_attributes = async (html) => {
     let $ = cheerio.load(html)
                 
     // Check reCAPTCHA
-    if (! $(html).find('.captcha-tips').length > 0 && ! html.includes('captcha')) { 
+    if (! $(html).find('.captcha-tips').length > 0 
+        && ! html.includes('captcha') ) { 
+        
         let catalog_box = $('.app-organic-search__list')
         let catalog_box_item = catalog_box.find('.list-no-v2-outter')
     
@@ -16,20 +18,53 @@ const catalog_ads_attributes = async (html) => {
         if (catalog_box_item.length > 0) {
             
             /* Return all details on page */
-            await catalog_box_item.each(async (i, el) => { 
+            await catalog_box_item.each((i, el) => { 
                 catalog_ads.push({
 
                     // Unique ID related ad post
-                    id: $(el).find('.J-img-switcher-item').attr('data-search-gt-img')
-                        || $(el).find('.elements-title-normal.one-line').attr('data-p4plog'),
-    
+                    id: (() => {
+                        a = $(el).find('.J-img-switcher-item').attr('data-search-gt-img') 
+                        b = $(el).find('.elements-title-normal.one-line').attr('data-p4plog')
+                        
+                        if ( a != undefined ) {
+                            return a
+                        
+                        } 
+                        
+                        if ( b != undefined ) {
+                            return b
+                        }
+                    })(),
+                      
                     // Title
-                    title: $(el).find('.elements-title-normal.one-line').attr('title') 
-                        || $(el).find('.elements-title-normal__outter').text(),
+                    title: (() => {
+                        a = $(el).find('.elements-title-normal.one-line').attr('title') 
+                        b = $(el).find('.elements-title-normal__outter').text()
+
+                        if ( a != undefined ) {
+                            return a
+                        
+                        } 
+                        
+                        if ( b != undefined ) {
+                            return b
+                        }
+                    })(),
                     
                     // Price
-                    price: $(el).find('.elements-offer-price-normal.medium').attr('title') 
-                        || $(el).find('elements-offer-price-normal__price').text(),
+                    price: (() => {
+                        a = $(el).find('.elements-offer-price-normal.medium').attr('title') 
+                        b = $(el).find('.elements-offer-price-normal__price').text()
+
+                        if ( a != undefined ) {
+                            return a
+                        
+                        } 
+                        
+                        if ( b != undefined ) {
+                            return b
+                        }
+                    })(),
                     
                     // Price discount
                     price_discount: $(el).find('.element-promotion-shipping-price__price').text(),
@@ -58,6 +93,7 @@ const catalog_ads_attributes = async (html) => {
     else {
         throw Error('Alibaba is blocking network traffic, please resolve the reCAPTCHA')
     }
+
 }
 
 
@@ -72,6 +108,7 @@ const request_catalog_ads_attributes = async (index) => {
     .then(attributes => { 
         return attributes
     })
+
 }
 
 
@@ -84,6 +121,7 @@ const request_range_catalog_ads_attributes = async (range) => {
     }
     
     return await Promise.all(promises)
+
 }
 
 
@@ -92,5 +130,6 @@ request_range_catalog_ads_attributes(argv[1])
 .then(result => {
     // Print JSON string
     console.log(JSON.stringify(result))
+
 })
 
