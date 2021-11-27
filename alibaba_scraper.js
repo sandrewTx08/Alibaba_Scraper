@@ -22,15 +22,23 @@ const catalog_ads_attributes = async (html) => {
                 catalog_ads.push({
 
                     // Unique ID related ad post
-                    id: (() => {
+                    id: ( () => {
                         a = $(el).find('.J-img-switcher-item').attr('data-search-gt-img') 
                         b = $(el).find('.elements-title-normal.one-line').attr('data-p4plog')
+                        c = $(el).find('.J-favorite-manager-wrap-product.list-no-v2-favorite-container.J-sc-fav-item-wrap').attr('data-fav-id') 
+                        d = $(el).find('.list-no-v2-inner.m-gallery-product-item-v2.img-switcher-parent').attr('data-ctrdot')
                         
                         if ( a != undefined && a != '') {
                             return a
                         
                         } else if ( b != undefined && b != '' ) {
                             return b
+                        
+                        } else if ( c != undefined && c != '' ) {
+                            return c
+                        
+                        } else if ( d != undefined && d != '' ) {
+                            return d
                         
                         } else {
                             return undefined
@@ -55,7 +63,7 @@ const catalog_ads_attributes = async (html) => {
                     
                     // Price
                     price: (() => {
-                        a = $(el).find('.elements-offer-price-normal.medium').attr('title') 
+                        a = $(el).find('.elements-offer-price-normal').attr('title') 
                         b = $(el).find('.elements-offer-price-normal__price').text()
 
                         if ( a != undefined && a != '') {
@@ -102,12 +110,19 @@ const catalog_ads_attributes = async (html) => {
 // Search keyword URL
 let url = `https://www.alibaba.com/trade/search?SearchText=${argv[0]}`
 
+// HTTP request options
+let options = {
+    headers: { 
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0' 
+    }
+}
+
 const request_catalog_ads_attributes = async (index) => {
     // Set URL index
     url += `&page=${index}`
     
     // Request page
-    let html = await axios.get(url)  
+    let html = await axios.get(url, options)  
     .then(response => {
         return response.data
     })
@@ -138,7 +153,7 @@ const request_range_catalog_ads_attributes = (range) => {
 request_range_catalog_ads_attributes(argv[1])
 .then(result => {
     // Print JSON string
-    console.log(JSON.stringify(result))
-
+    // console.log(JSON.stringify(result))
+    console.log(result)
 })
 
