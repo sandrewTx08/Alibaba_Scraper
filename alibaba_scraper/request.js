@@ -24,7 +24,7 @@ const catalog_ads_attributes = async (index) => {
 }
 
 
-const range_catalog_ads_attributes = async (range) => {
+const range_catalog_ads_attributes = (range) => {
     promises = []
 
     // Scrape the total of pages set by the range
@@ -32,7 +32,7 @@ const range_catalog_ads_attributes = async (range) => {
         promises.push(catalog_ads_attributes(index))
     }
 
-    return await Promise.all(promises)
+    return Promise.all(promises)
 
 }
 

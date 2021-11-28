@@ -19,9 +19,9 @@ const catalog_ads = async (html) => {
         if ( catalog_box_item.length > 0 ) {
             
             // Return all details on page
-            await catalog_box_item.each( async (i, el) => { 
+            await catalog_box_item.each((i, el) => { 
                 ads.push( 
-                await {
+                {
                     
                     // Unique ID related ad post
                     id: (() => {

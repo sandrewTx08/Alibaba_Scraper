@@ -31,14 +31,9 @@ const alibaba_scraper = async (search, range, options) => {
         options: options
     }
 
-    await request
-        .range_catalog_ads_attributes(range)
-            .then(() => {
-                return ads
-            })
-
+    await request.range_catalog_ads_attributes(range)
 }
 
 
-module.exports = { alibaba_scraper }
+module.exports = { scraper: alibaba_scraper }
 
