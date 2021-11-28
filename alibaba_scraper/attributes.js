@@ -1,8 +1,11 @@
 const cheerio = require('cheerio');
 
 
+// All catalogs
+global.ads = []
+
+
 const catalog_ads = async (html) => {
-    let catalog_ads = []
     let $ = cheerio.load(html)
                 
     // Check reCAPTCHA
@@ -17,8 +20,8 @@ const catalog_ads = async (html) => {
             
             // Return all details on page
             await catalog_box_item.each( async (i, el) => { 
-                catalog_ads.push( 
-                    await {
+                ads.push( 
+                await {
                     
                     // Unique ID related ad post
                     id: (() => {
@@ -95,8 +98,6 @@ const catalog_ads = async (html) => {
                     link: $(el).find('.elements-title-normal.one-line').attr('href')
                 })
             })
-            
-            return catalog_ads
         }  
     }
     

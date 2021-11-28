@@ -8,31 +8,31 @@ const catalog_ads_attributes = async (index) => {
 
     // Set URL index
     url += `&page=${index}`
-    
+  
     // Request page
-    let html = await axios.get(url, config.options)  
+    await axios.get(url, config.options)  
         .then(response => {
             return response.data
         })
-
-    // Scrape
-    return await attributes.catalog_ads(html)
-        .then(result_set => { 
-            return result_set
+        
+        // Scrape
+        .then(html => {
+            attributes.catalog_ads(html)
         })
-
+    
+    
 }
 
 
-const range_catalog_ads_attributes = (range) => {
+const range_catalog_ads_attributes = async (range) => {
     promises = []
-    
+
     // Scrape the total of pages set by the range
     for (let index=0; index < range; index++) {
         promises.push(catalog_ads_attributes(index))
     }
-    
-    return Promise.all(promises)
+
+    return await Promise.all(promises)
 
 }
 

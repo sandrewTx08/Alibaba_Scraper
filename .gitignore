@@ -1,5 +1,13 @@
 _hide
 
+# Jupyter
+.ipynb_checkpoints
+settings.json
+
+# Python
+__pycache__
+
+# Node
 node_modules
 package-lock.json
 package.json

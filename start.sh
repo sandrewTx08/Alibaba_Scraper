@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Files
-alibaba_scraper=alibaba_scraper.js
+alibaba_scraper=index.js
 
 # Node files
 node_stuff_1=package.json
