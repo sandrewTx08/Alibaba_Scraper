@@ -6,9 +6,10 @@ const catalog_ads_attributes = async (index) => {
     // Search keyword URL
     let url = `https://www.alibaba.com/trade/search?SearchText=${config.search}`
 
-    // Set URL index
-    url += `&page=${index}`
-  
+    // URL parameters: 
+        url += '&viewtype=L' // Try to fix price attribute not found
+        url += `&page=${index}` // Set URL index
+    
     // Request page
     await axios.get(url, config.options)  
         .then(response => {

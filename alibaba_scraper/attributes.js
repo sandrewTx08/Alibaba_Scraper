@@ -22,7 +22,6 @@ const catalog_ads = async (html) => {
             await catalog_box_item.each((i, el) => { 
                 ads.push( 
                 {
-                    
                     // Unique ID related ad post
                     id: (() => {
                         a = $(el).find('.J-img-switcher-item').attr('data-search-gt-img') 
